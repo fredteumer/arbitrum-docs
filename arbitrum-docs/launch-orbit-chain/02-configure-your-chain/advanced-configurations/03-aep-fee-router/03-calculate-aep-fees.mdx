@@ -23,6 +23,46 @@ In a vanilla Orbit chain (a chain without customizations, transaction ordering p
 
 Based on the above, we interpret that an Orbit chain’s revenue sources include all fee components: `l2BaseFee`, `l2SurplusFee`, `l1BaseFee`, and `l1SurplusFee`. However, one of these fee components is also a cost, `l1BaseFee`, as it is used to pay for parent chain settlement.
 
+If AEP fees are paid in ETH:
+
+AEP_FEES = [
+  (L2BaseFee * Daily_price_L2_gas_token_to_ETH) +
+  (L2SurplusFee * Daily_price_L2_gas_token_to_ETH) +
+  (L1BaseFee * Daily_price_L1_gas_token_to_ETH) +
+  (L1SurplusFee * Daily_price_L1_gas_token_to_ETH)
+  -
+  (
+    (L1BaseFee * Daily_price_L1_gas_token_to_ETH) +
+    (AssertionCosts * Daily_price_L1_gas_token_to_ETH)
+  )
+] * 0.1
+
+If AEP fees are paid in the custom gas token:
+
+AEP_FEES = [
+  (L2BaseFee) +
+  (L2SurplusFee) +
+  (L1BaseFee * Daily_price_L1_to_L2_gas) +
+  (L1SurplusFee * Daily_price_L1_to_L2_gas)
+  -
+  (
+    (L1BaseFee * Daily_price_L1_to_L2_gas) +
+    (AssertionCosts * Daily_price_L1_to_L2_gas)
+  )
+] * 0.1
+
+Apechain Example:
+L2BaseFee + L2SurplusFee: Summed from feeCollection traces excluding transfers to the system address (denominated in the Orbit’s gas token, example $APE).
+
+L1BaseFee + L1SurplusFee: Retrieved from the SequencerInbox on the parent chain by summing the actual gas costs of batch-posting transactions (denominated in ETH).
+
+Assertion costs: Pulled from the RollupProxy via nodeCreated events and other validator-related transactions (also in ETH).
+
+To simplify this for developers and avoid discrepancies between chain operators and RaaS providers, we recommend using prebuilt SQL queries from Allium to extract each of these values consistently. 
+
+The Arbitrum Foundation can help provide or validate these queries.
+
+
 ### Assertion costs
 
 The above fee system applies to an Orbit chain’s Sequencer and Batch Poster, but there is another important actor that is considered essential to the chain. These are the [validators](/how-arbitrum-works/05-validation-and-proving/03-proving-and-challenges.mdx).

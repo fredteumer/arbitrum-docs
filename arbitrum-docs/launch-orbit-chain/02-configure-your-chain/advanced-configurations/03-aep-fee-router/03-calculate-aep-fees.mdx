@@ -14,25 +14,24 @@ Before we define “Protocol Net Revenue”, let's explain how fees work in a st
 
 ### Sequencing revenue
 
-In a vanilla Orbit chain (a chain without customizations, transaction ordering policies, or other add-ons), users and dApps will pay a single gas fee to submit their transactions. Under the hood, however, a user’s fee is allocated across four components used by the network in different ways. These four fee components are split as follows:
+In a vanilla Orbit chain (a chain without customizations, transaction ordering policies, or other add-ons), users and dApps will pay a single gas fee to submit their transactions. Under the hood, however, a user’s fee is allocated across 3 components used by the network in different ways. These 3 fee components are split as follows:
 
 - `l2BaseFee`: fees paid to execute a transaction on the Orbit chain.
 - `l2SurplusFee`: surplus fees are charged in addition to the base fee when an Orbit chain is congested.
-- `l1BaseFee`: fees paid to cover the cost of an Orbit chain posting its settlement transaction to the parent chain.
 - `l1SurplusFee`: an additional surplus fee that can be configured to award extra fees to the batch poster.
 
-Based on the above, we interpret that an Orbit chain’s revenue sources include all fee components: `l2BaseFee`, `l2SurplusFee`, `l1BaseFee`, and `l1SurplusFee`. However, one of these fee components is also a cost, `l1BaseFee`, as it is used to pay for parent chain settlement.
+Based on the above, we interpret that an Orbit chain’s revenue sources include all fee components: `l2BaseFee`, `l2SurplusFee`, and `l1SurplusFee`. 
+
+AEP fees can be paid in either ETH or Custom Gas token. We highly encourage using the automatic routers which will calculate the fees like below: 
 
 If AEP fees are paid in ETH:
 
 AEP_FEES = [
   (L2BaseFee * Daily_price_L2_gas_token_to_ETH) +
   (L2SurplusFee * Daily_price_L2_gas_token_to_ETH) +
-  (L1BaseFee * Daily_price_L1_gas_token_to_ETH) +
   (L1SurplusFee * Daily_price_L1_gas_token_to_ETH)
   -
   (
-    (L1BaseFee * Daily_price_L1_gas_token_to_ETH) +
     (AssertionCosts * Daily_price_L1_gas_token_to_ETH)
   )
 ] * 0.1
@@ -42,19 +41,15 @@ If AEP fees are paid in the custom gas token:
 AEP_FEES = [
   (L2BaseFee) +
   (L2SurplusFee) +
-  (L1BaseFee * Daily_price_L1_to_L2_gas) +
   (L1SurplusFee * Daily_price_L1_to_L2_gas)
   -
   (
-    (L1BaseFee * Daily_price_L1_to_L2_gas) +
     (AssertionCosts * Daily_price_L1_to_L2_gas)
   )
 ] * 0.1
 
 Apechain Example:
-L2BaseFee + L2SurplusFee: Summed from feeCollection traces excluding transfers to the system address (denominated in the Orbit’s gas token, example $APE).
-
-L1BaseFee + L1SurplusFee: Retrieved from the SequencerInbox on the parent chain by summing the actual gas costs of batch-posting transactions (denominated in ETH).
+L2BaseFee + L2SurplusFee + L1SurplusFee : Summed from feeCollection traces excluding transfers to the system address (denominated in the Orbit’s gas token, example $APE). L1SurplusFee is obtained in the Orbit chain too. 
 
 Assertion costs: Pulled from the RollupProxy via nodeCreated events and other validator-related transactions (also in ETH).
 

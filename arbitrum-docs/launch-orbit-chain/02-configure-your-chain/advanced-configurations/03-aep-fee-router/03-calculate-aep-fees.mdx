@@ -86,7 +86,7 @@ Based on our understanding above, we can calculate AEP fees as follows.
 ```jsx
 AEP_FEES = [(gross revenue) - (settlement costs)]*0.1
 AEP_FEES = [(sequencing revenue + additional revenue) - (settlement costs + assertion costs)]*0.1
-AEP_FEES = [(l2BaseFee + l2SurplusFee + l1BaseFee + l1SurplusFee) - (l1BaseFee + assertion costs)]*0.1
+AEP_FEES = [(l2BaseFee + l2SurplusFee + l1SurplusFee) - assertion costs]*0.1
 ```
 
 ## Opting in for assertion cost deduction

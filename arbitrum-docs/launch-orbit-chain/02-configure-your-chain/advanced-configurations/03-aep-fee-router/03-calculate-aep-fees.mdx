@@ -14,7 +14,7 @@ Before we define “Protocol Net Revenue”, let's explain how fees work in a st
 
 ### Sequencing revenue
 
-In a vanilla Orbit chain (a chain without customizations, transaction ordering policies, or other add-ons), users and dApps will pay a single gas fee to submit their transactions. Under the hood, however, a user’s fee is allocated across 3 components used by the network in different ways. These 3 fee components are split as follows:
+In a vanilla Orbit chain (a chain without customizations, transaction ordering policies, or other add-ons), users and dApps will pay a single gas fee to submit their transactions. Under the hood, however, a user’s fee is allocated across three components used by the network in different ways. These three fee components are split as follows:
 
 - `l2BaseFee`: fees paid to execute a transaction on the Orbit chain.
 - `l2SurplusFee`: surplus fees are charged in addition to the base fee when an Orbit chain is congested.
@@ -22,9 +22,9 @@ In a vanilla Orbit chain (a chain without customizations, transaction ordering p
 
 Based on the above, we interpret that an Orbit chain’s revenue sources include all fee components: `l2BaseFee`, `l2SurplusFee`, and `l1SurplusFee`. 
 
-AEP fees can be paid in either ETH or Custom Gas token. We highly encourage using the automatic routers which will calculate the fees like below: 
+AEP fees can be paid in either `ETH` or Custom Gas token. We highly encourage using the automatic routers which will calculate the fees like below: 
 
-If AEP fees are paid in ETH:
+If AEP fees are paid in `ETH`:
 
 AEP_FEES = [
   (L2BaseFee * Daily_price_L2_gas_token_to_ETH) +
@@ -49,9 +49,9 @@ AEP_FEES = [
 ] * 0.1
 
 Apechain Example:
-L2BaseFee + L2SurplusFee + L1SurplusFee : Summed from feeCollection traces excluding transfers to the system address (denominated in the Orbit’s gas token, example $APE). L1SurplusFee is obtained in the Orbit chain too. 
+`L2BaseFee` + `L2SurplusFee` + `L1SurplusFee` : Summed from feeCollection traces excluding transfers to the system address (denominated in the Orbit’s gas token, example $APE). `L1SurplusFee` is obtained in the Orbit chain too. 
 
-Assertion costs: Pulled from the RollupProxy via nodeCreated events and other validator-related transactions (also in ETH).
+Assertion costs: Pulled from the `RollupProxy` via `nodeCreated` events and other validator-related transactions (also in `ETH`).
 
 To simplify this for developers and avoid discrepancies between chain operators and RaaS providers, we recommend using prebuilt SQL queries from Allium to extract each of these values consistently. 
 

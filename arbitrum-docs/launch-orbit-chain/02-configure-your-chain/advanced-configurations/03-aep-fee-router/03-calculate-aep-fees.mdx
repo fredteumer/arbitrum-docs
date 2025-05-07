@@ -26,32 +26,36 @@ AEP fees can be paid in either `ETH` or Custom Gas token. We highly encourage us
 
 If AEP fees are paid in `ETH`:
 
+```jsx
 AEP*FEES = [
 (L2BaseFee * Daily*price_L2_gas_token_to_ETH) +
 (L2SurplusFee * Daily_price_L2_gas_token_to_ETH) +
-(L1SurplusFee \* Daily_price_L1_gas_token_to_ETH)
+(L1SurplusFee * Daily_price_L1_gas_token_to_ETH)
 
 - (
-  (AssertionCosts _ Daily_price_L1_gas_token_to_ETH)
+  (AssertionCosts * Daily_price_L1_gas_token_to_ETH)
   )
-  ] _ 0.1
+  ] * 0.1
+```
 
 If AEP fees are paid in the custom gas token:
 
+```jsx
 AEP_FEES = [
 (L2BaseFee) +
 (L2SurplusFee) +
-(L1SurplusFee \* Daily_price_L1_to_L2_gas)
+(L1SurplusFee * Daily_price_L1_to_L2_gas)
 
 - (
-  (AssertionCosts _ Daily_price_L1_to_L2_gas)
+  (AssertionCosts * Daily_price_L1_to_L2_gas)
   )
-  ] _ 0.1
+  ] * 0.1
+```
 
-Apechain Example:
-`L2BaseFee` + `L2SurplusFee` + `L1SurplusFee` : Summed from feeCollection traces excluding transfers to the system address (denominated in the Orbit’s gas token, example $APE). `L1SurplusFee` is obtained in the Orbit chain too.
+**Apechain Example**:
+`L2BaseFee` + `L2SurplusFee` + `L1SurplusFee` : Summed from feeCollection traces excluding transfers to the system address (denominated in the Orbit’s gas token, example `APE`). `L1SurplusFee` is obtained in the Orbit chain too.
 
-Assertion costs: Pulled from the `RollupProxy` via `nodeCreated` events and other validator-related transactions (also in `ETH`).
+**Assertion costs**: Pulled from the `RollupProxy` via `nodeCreated` events and other validator-related transactions (also in `ETH`).
 
 To simplify this for developers and avoid discrepancies between chain operators and RaaS providers, we recommend using prebuilt SQL queries from Allium to extract each of these values consistently.
 
@@ -113,7 +117,7 @@ The following costs can be deducted for an eligible validator:
 
 If a team elects to deduct their assertion posting costs from eligible validators, they must establish and obey the following process:
 
-- Communicate to the Arbitrum Foundation that they intend to deduct onchain assertion costs
+- Communicate to the Arbitrum Foundation (AF) that they intend to deduct onchain assertion costs
   - Align on a cadence of disbursal and accounting these costs with the Arbitrum Foundation (e.g., quarterly, annually)
   - At this cadence, provide onchain accounting to the Arbitrum Foundation to substantiate deducted costs from the AEP Fee Router stream.
 
@@ -142,4 +146,4 @@ As discussed above in Additional revenue sources, if you have customized your Or
 
 ### Other cases
 
-If you are still determining if your Orbit configuration applies to the listed or unlisted special cases, we recommend engaging with the Arbitrum Foundation.
+If you are still determining if your Orbit configuration applies to the listed or unlisted special cases, we recommend engaging with the AF.
